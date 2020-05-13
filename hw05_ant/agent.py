@@ -1,16 +1,20 @@
-import random
 import numpy as np
 import os
-from .train import transform_state
+import torch
+#from .train import transform_state
 
+def transform_state(state):
+    return torch.tensor(state)
 
 class Agent:
     def __init__(self):
-        self.model = torch.load(__file__[:-8] + "/agent.pkl")
-        
+        self.actor = torch.load(os.path.join(__file__[:-8], "agent.pkl"))
+        pass
+
     def act(self, state):
         state = transform_state(state)
-        return 0 # TODO
+        action = self.actor(state).detach().numpy()
+        return list(action)
 
     def reset(self):
         pass
